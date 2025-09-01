@@ -1,4 +1,4 @@
-# Harmonic Approximator
+# **Exercise 1**: Approximation of Harmonic Oscillator eigenenergies via Infinite Square Well eigenfunctions
 
 - [Main program](#main-program)
 - [N vs. L plot](#n-vs-l-plot)
