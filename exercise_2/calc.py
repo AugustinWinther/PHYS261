@@ -5,11 +5,12 @@
 
 # Third party
 import numpy as np
+import scipy.special as sp
 from numpy.typing import NDArray
 
 
-def _b0_value(r: NDArray, k: NDArray, dr: float,
-              n: int, L: int, Z: int) -> float:
+def _b0_numeric(r: NDArray, k: NDArray, dr: float,
+                n: int, L: int, Z: int) -> float:
     """Returns calculated b0 value by numerical integration and normalization
     
     """
@@ -29,7 +30,16 @@ def _b0_value(r: NDArray, k: NDArray, dr: float,
     # Find b0 value by normalization
     return 1/np.sqrt(integral*(Z/(n))**(2*(1 + L)))
 
-def R_values(r_max: float, prec: int, 
+
+def _b0_analytic(n: int, L: int, Z: int) -> float:
+    """Returns analytical b0 value
+    
+    """
+    return ((2**(1 + L))
+            *(1/(n*sp.factorial(2*L + 1)))
+            *np.sqrt((Z*sp.factorial(n + L))/(sp.factorial(n - L - 1))))
+
+def R_values(r_max: float, prec: int, analytic: bool,
              n: int, L: int, Z: int) -> tuple[NDArray, NDArray]:
     """Returns `prec` evenly spaced values R of Radial Wave Function from 0 to 
     r_max and the corresponding r (distance) values.
@@ -44,7 +54,10 @@ def R_values(r_max: float, prec: int,
     # Row vector containing all k-values
     k = (np.arange(0, k_max + 1, dtype=np.float64))[np.newaxis, :]
 
-    b0 = _b0_value(r, k, dr, n, L, Z)
+    if analytic:
+        b0 = _b0_analytic(n, L, Z)
+    else:
+        b0 = _b0_numeric(r, k, dr, n, L, Z)
 
     # Recursively calculate bk values if it has more than 1 value (b0)
     bk = np.empty_like(k)

@@ -13,13 +13,13 @@ import matplotlib.pyplot as plt
 # Local
 import calc
 
-def plot(rmax: float, prec: int,
+def plot(rmax: float, prec: int, analytic: bool,
          n: int, L: int, Z: int, ) -> None:
     """Plots the values of the Radial Wavefunction for given n, L, and Z values.
     
     """
 
-    R, r = calc.R_values(rmax, prec, n, L, Z)
+    R, r = calc.R_values(rmax, prec, analytic, n, L, Z)
     u = r*R
     P = np.abs(u)**2
 
@@ -61,32 +61,38 @@ if __name__ == "__main__":
                                                   "Radial Wavefunction for "
                                                   "given n, L, and Z values."))
 
-    parser.add_argument('-n', help="Quantum number n.",
-                        dest='n', 
+    parser.add_argument("-n", help="Quantum number n.",
+                        dest="n", 
                         type=int,
                         required=True)
 
-    parser.add_argument('-L', help=("Quantum number L (same as small L)."),
-                        dest='L', 
+    parser.add_argument("-L", help=("Quantum number L (same as small L)."),
+                        dest="L", 
                         type=int,
                         required=True)
     
-    parser.add_argument('-Z', help=("Amount of protons."),
-                        dest='Z', 
+    parser.add_argument("-Z", help=("Amount of protons."),
+                        dest="Z", 
                         type=int,
                         required=True)
     
-    parser.add_argument('--rmax', help=("Maximum r value"),
-                        dest='rmax', 
+    parser.add_argument("--rmax", help=("Maximum r value"),
+                        dest="rmax", 
                         type=float,
                         default=6)
     
-    parser.add_argument('--prec', help=("Amount of points used in numerical "
+    parser.add_argument("--prec", help=("Amount of points used in numerical "
                                         "integration between 0 and rmax."),
                         dest="prec", 
                         type=int,
                         default=200)
 
+    parser.add_argument("--analytic", help=("If passed, then b0 value is"
+                                            "calculated analytically. If not"
+                                            "then it is calculated numerically"),
+                        dest="analytic", 
+                        action="store_true")
+
     args = parser.parse_args()
 
-    plot(args.rmax, args.prec, args.n, args.L, args.Z)
+    plot(args.rmax, args.prec, args.analytic, args.n, args.L, args.Z)
