@@ -9,6 +9,7 @@ import argparse
 # Third party
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.integrate as integ
 
 # Local
 import calc
@@ -22,6 +23,10 @@ def plot(rmax: float, prec: int,
     R, r = calc.R_values(rmax, prec, n, L, Z)
     u = r*R
     P = np.abs(u)**2
+
+    # Print integration of probability density. Should be very close to 1
+    print(f"Integral of Radial Probability Density fom 0 to {rmax} = "
+          f"{integ.simpson(P, r)}")
 
     fig = plt.figure(layout="constrained")
     fig.suptitle(f"$n = {n}$ and $L = {L}$")

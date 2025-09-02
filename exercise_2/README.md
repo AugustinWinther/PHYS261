@@ -8,7 +8,9 @@
    * [Solving for $b_0$](#solving-for-b_0)
 
 ## Main program
-The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will be (note that this is not a valid model for large $Z$).
+The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will be (note that this is not a valid model for large $Z$). 
+
+_The program also prints out the integral of the Radial Probability Density, as to verify that it is approximately $1$. The higher `rmax` and `prec` values, the closer you get to $1$._
 
 Example of how to run the program with quantum numbers $n=2$ and $l=1$, and atomic number $Z=1$. We use `rmax=16` to specify the maximum distance away from the nucleus to calculate for, and `prec=100` amount of points between `0` and `rmax` for the plotting (higher `prec`, smoother plot)
 
