@@ -9,29 +9,7 @@ import scipy.special as sp
 from numpy.typing import NDArray
 
 
-def _b0_numeric(r: NDArray, k: NDArray, dr: float,
-                n: int, L: int, Z: int) -> float:
-    """Returns calculated b0 value by numerical integration and normalization
-    
-    """
-    # Create row vector with all k-values except the first
-    j = k[0, 1:]
-
-    # Create matrix with all j values (all k except k=0) and r combinations
-    bj_summand = (j + L - n + 1)/((j + 1)*(j + 2*L + 2))*((Z*r)/(n))**j
-
-    # Create column vector with all summations
-    bj_sums = np.sum(bj_summand, axis=1)[:, np.newaxis]
-
-    # Calculate integral using Riemann summation
-    integrand = r**(2*(1 + L))*np.exp(-2*((Z*r)/(n)))*((1 + 2*bj_sums)**2)*dr
-    integral = np.sum(integrand)
-
-    # Find b0 value by normalization
-    return 1/np.sqrt(integral*(Z/(n))**(2*(1 + L)))
-
-
-def _b0_analytic(n: int, L: int, Z: int) -> float:
+def _b0_value(n: int, L: int, Z: int) -> float:
     """Returns analytical b0 value
     
     """
@@ -39,7 +17,7 @@ def _b0_analytic(n: int, L: int, Z: int) -> float:
             *(1/(n*sp.factorial(2*L + 1)))
             *np.sqrt((Z*sp.factorial(n + L))/(sp.factorial(n - L - 1))))
 
-def R_values(r_max: float, prec: int, analytic: bool,
+def R_values(r_max: float, prec: int,
              n: int, L: int, Z: int) -> tuple[NDArray, NDArray]:
     """Returns `prec` evenly spaced values R of Radial Wave Function from 0 to 
     r_max and the corresponding r (distance) values.
@@ -54,10 +32,8 @@ def R_values(r_max: float, prec: int, analytic: bool,
     # Row vector containing all k-values
     k = (np.arange(0, k_max + 1, dtype=np.float64))[np.newaxis, :]
 
-    if analytic:
-        b0 = _b0_analytic(n, L, Z)
-    else:
-        b0 = _b0_numeric(r, k, dr, n, L, Z)
+    b0 = _b0_value(n, L, Z)
+
 
     # Recursively calculate bk values if it has more than 1 value (b0)
     bk = np.empty_like(k)

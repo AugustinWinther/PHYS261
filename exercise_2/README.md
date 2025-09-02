@@ -8,12 +8,12 @@
    * [Solving for $b_0$](#solving-for-b_0)
 
 ## Main program
-The program `plot.py` uses numerical integration to determine the normalization of the Radial Wave Function, then plots it together with the Reduced Radial Wave Function and the Radial Probability Density.
+The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will (note that this is not a valid model for large $Z$).
 
-Example of how to run the program with $n=2$, $l=0$  and $Z=1$, where we use `rmax=16` to specify the maximum length to calculate for, and `prec=100` amount of points between `0` and `rmax` for the numerical integration and plotting. We have also set the flag `--analytic` indicating that we want to calculate the $b_0$ value analytically instead of numerically.
+Example of how to run the program with quantum numbers $n=2$ and $l=0$, and atomic number $Z=1$. We use `rmax=16` to specify the maximum distance away from the nucleus to calculate for, and `prec=100` amount of points between `0` and `rmax` for the plotting (higher `prec`, smoother plot)
 
 ```bash
-python plot.py -n 2 -L 1 -Z 1 --rmax 16 --prec 100 --analytic
+python plot.py -n 2 -L 1 -Z 1 --rmax 16 --prec 100
 ```
 
 Output:
@@ -50,9 +50,9 @@ where $b_k$ is given recursively as
     b_{k + 1} = \frac{2(k + l -n + 1)}{(k + 1)(k + 2l + 2)}b_k
 ```
 
-where the first $b_k$ value, $b_0$ is found by the normalization condition.
+where the first $b_k$ value, $b_0$, is found by the normalization condition of the wave function of the electron.
 
-The main part of this program focuses on finding $b_0$. To find it, we first need to find the constraints of $R = R_{n l}(r)$ given by the normalization condition.
+The main part of this program (and this README) focuses on finding $b_0$. To find it, we first need to find the constraints of $R = R_{n l}(r)$ given by the normalization condition.
 
 ### Finding the constraints of $R$ (normalization integral)
 
@@ -62,7 +62,7 @@ The Radial Wave Function arises from the assumption that we can write certain wa
     \psi_{n l m}(r, \theta, \phi) = R_{n l}(r) Y_l^m(\theta, \phi)
 ```
 
-where $Y = Y_l^m(\theta, \phi)$ is the Angular Wave Function. We will not go too much into detail about this one, other than that the integral of $Y^*Y$ on its domain is equal to $1$.
+where $Y = Y_l^m(\theta, \phi)$ is the Angular Wave Function. We will not go into detail about this one, other than that the integral of $Y^*Y$ on its domain is equal to $1$.
 
 In quantum mechanics, we have the following constraint for "correct" wave functions
 
@@ -79,7 +79,7 @@ In our case, $\psi$ is expressed in spherical coordinates, so writing this as an
 \end{align*}
 ```
 
-Now, since $Y$ depends only on $\theta$ and $\phi$, while $R$ only depends on $r$, we can further write this as
+Now, since $Y$ depends only on $\theta$ and $\phi$, while $R$ only depends on $r$, we can write this as
 
 ```math
 1 = \int_0^\infty R^* R \, r^2  dr  \int_0^\pi \int_0^{2\pi} Y^*Y  \sin(\theta) d\phi d\theta
@@ -108,11 +108,10 @@ Which when more fully expressed becomes
 \end{align*}
 ```
 
-We now have a better view of the constraint we are beholden to. Now, we need to find out what consequence this has for the value of $b_0$ 
-
-_We could already stop here if all we wanted was to calculate $b_0$ numerically, by just doing numerical integrations._
+We now have a better view of the constraint we are beholden to. Now, we need to find out what consequence this has for the value of $b_0$, which is what we are looking for.
 
 ### Rewriting the sum in the integral
+
 
 Let us focus on the sum in the integral:
 
@@ -135,7 +134,7 @@ or equivalently
 \end{align*}
 ```
 
-we have that all $b_k$'s includes the value of $b_0$, so we can actually write the formula as non-recursive given $b_0$ is known:
+we have that all $b_k$'s include the value of $b_0$, so we can actually write the formula as non-recursive given $b_0$ is known:
 
 ```math
 \begin{align*}
@@ -149,7 +148,7 @@ we have that all $b_k$'s includes the value of $b_0$, so we can actually write t
 \end{align*}
 ```
 
-Before we continue so simplify $b_j$, we need to go over a quick definition of the [Pochhammer function / rising factorial](https://en.wikipedia.org/wiki/Falling_and_rising_factorials):
+Before we continue to simplify $b_j$, we need to go over a quick definition of the [Pochhammer function / rising factorial](https://en.wikipedia.org/wiki/Falling_and_rising_factorials):
 
 ```math
 \begin{align*}
