@@ -8,9 +8,9 @@
    * [Solving for $b_0$](#solving-for-b_0)
 
 ## Main program
-The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will (note that this is not a valid model for large $Z$).
+The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will be (note that this is not a valid model for large $Z$).
 
-Example of how to run the program with quantum numbers $n=2$ and $l=0$, and atomic number $Z=1$. We use `rmax=16` to specify the maximum distance away from the nucleus to calculate for, and `prec=100` amount of points between `0` and `rmax` for the plotting (higher `prec`, smoother plot)
+Example of how to run the program with quantum numbers $n=2$ and $l=1$, and atomic number $Z=1$. We use `rmax=16` to specify the maximum distance away from the nucleus to calculate for, and `prec=100` amount of points between `0` and `rmax` for the plotting (higher `prec`, smoother plot)
 
 ```bash
 python plot.py -n 2 -L 1 -Z 1 --rmax 16 --prec 100
@@ -23,7 +23,7 @@ Output:
 
 ## Mathematics behind code
 
-_NOTE: GitHub does not have the best renderer for LaTeX. I recommend viewing this in VSCode's markdown previewer._
+_NOTE: GitHub does not have the best renderer for LaTeX. I recommend viewing this in VSCode's Markdown previewer._
 
 We have three functions (all in atomic units) which we want to plot for arbitrary $n$, $l$ and $Z$ values:
 
@@ -70,7 +70,7 @@ In quantum mechanics, we have the following constraint for "correct" wave functi
     1 = \int_{\mathbb{R}^3} \psi^*\psi \, d\vec{r}
 ```
 
-In our case, $\psi$ is expressed in spherical coordinates, so writing this as an explicit triple-integral, we get
+In our case, $\psi$ is expressed in spherical coordinates, so writing this as a triple integral, we get
 
 ```math
 \begin{align*}
@@ -85,7 +85,7 @@ Now, since $Y$ depends only on $\theta$ and $\phi$, while $R$ only depends on $r
 1 = \int_0^\infty R^* R \, r^2  dr  \int_0^\pi \int_0^{2\pi} Y^*Y  \sin(\theta) d\phi d\theta
 ```
 
-and since we already know that he integral of $Y^*Y$ on its domain is equal to $1$, and that $R$ is a purely real function, we end up with
+and since we already know that the integral of $Y^*Y$ on its domain is equal to $1$, and that $R$ is a purely real function, we end up with
 
 ```math
 \begin{align*}
@@ -93,7 +93,7 @@ and since we already know that he integral of $Y^*Y$ on its domain is equal to $
 \end{align*}
 ```
 
-Which when more fully expressed becomes
+Which, when more fully expressed, becomes
 
 ```math
 \begin{align*}
@@ -143,10 +143,19 @@ we have that all $b_k$'s include the value of $b_0$, so we can actually write th
     b_3 &= b_0 \frac{2(1  + l - n)}{1(1+ 2l + 1)} \frac{2(2  + l - n)}{2(2+ 2l + 1)} \frac{2(3  + l - n)}{3(3+ 2l + 1)} \\
     &\vdots \\
     b_j &= b_0 \prod_{i=1}^{j} \frac{2(i + l - n)}{i(i + 2l + 1)} \\
+\end{align*}
+```
+Thus we have a explicit formula for $b_j$ where $j \geq 1$. We then rewrite the expression as
+
+```math
+\begin{align*}
+    b_j &= b_0 \frac{\prod_{i=1}^{j} 2(i + l - n)}{\prod_{i=1}^{j} j(i + 2l + 1)} \\
+    b_j &= b_0 \frac{\prod_{i=1}^{j} (i + l - n)}{\prod_{i=1}^{j} (i + 2l + 1)} \cdot \frac{\prod_{i=1}^{j}2}{\prod_{i=1}^{j}j} \\
     b_j &= b_0 \frac{\prod_{i=1}^{j} (i + l - n)}{\prod_{i=1}^{j} (i + 2l + 1)} \cdot \frac{2^j}{j!} \\
     b_j &= b_0 \frac{\prod_{i=1}^{j} [(l - n) + i]}{\prod_{i=1}^{j} [(2l + 1) + i]} \cdot \frac{2^j}{j!}
 \end{align*}
 ```
+
 
 Before we continue to simplify $b_j$, we need to go over a quick definition of the [Pochhammer function / rising factorial](https://en.wikipedia.org/wiki/Falling_and_rising_factorials):
 
@@ -194,7 +203,7 @@ We have that
 \frac{(l - n + 1)_0}{(2l + 2)_0} \cdot \frac{(2 Z r / n)^0}{0!} = \frac{1}{1}\cdot\frac{1}{1} = 1
 ```
 
-thus we can rewrite new sum as
+thus, we can rewrite the new sum as
 
 ```math
 \begin{align*}
@@ -203,7 +212,7 @@ thus we can rewrite new sum as
 \end{align*}
 ```
 
-And our new expression for our sum becomes
+And our new expression for the sum in the integral becomes
 
 ```math
 \begin{align*}
@@ -232,18 +241,18 @@ which is also called [Kummer's function of the first kind](https://en.wikipedia.
 ```
 
 
-We can replace our sum in the integral with out new expression:
+We now replace our sum in the integral with our new expression:
 
 ```math
 \begin{align*}
   1 &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|\sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k\right|^2 dr \\
-  &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|b_0{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
+  &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|b_0\space{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
   &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} b_0^2 \left|{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
   &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
 \end{align*}
 ```
 
-Well, the integral still looks somewhat horrible, however, so we still have a ways to go.
+Now, we can start to actually evaluate the integral.
 
 ### Evaluating the integral
 
@@ -258,7 +267,7 @@ The Hypergeometric function we are working with (Krummer's function of first kin
 
 where $a$ and $b$ are some non-negative integers. 
 
-In our case, we would have $-a = l - n + 1$ and $b + 1 = 2l + 2$, and of course $z = 2 Z r / n$
+In our case, we have $-a = l - n + 1$ and $b + 1 = 2l + 2$, and of course $z = 2 Z r / n$, giving us
 
 ```math
 \begin{align*}
@@ -334,12 +343,13 @@ In our case, we would have $a = n - l - 1$ and $b= 2l + 1$, and of course $z = 2
 \end{align*}
 ```
 
-which is our integral! We thus end up with the equation
+which is our integral! We thus end up with
 
 ```math
 \begin{align*}
+1 &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \left[\frac{(n - l - 1)!(2l +1)!}{(n + l)!} \right]^2 \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left[L_{n - l - 1}^{2l + 1}(2 Z r / n)\right]^2 dr \\
 1 &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \left[\frac{(n - l - 1)!(2l +1)!}{(n + l)!} \right]^2 \left(2\frac{Z}{n}\right)^{-3 - 2l}  \frac{(n + l)!}{(n - l - 1)!}2n \\
-  &= 2^{-2-2l}\left(\frac{Z}{n}\right)^{-1}b_0^2 \frac{n(n - l - 1)![(2l +1)!]^2}{(n + l)!} 
+ 1 &= 2^{-2-2l}\left(\frac{Z}{n}\right)^{-1}b_0^2 \frac{n(n - l - 1)![(2l +1)!]^2}{(n + l)!} 
 \end{align*}
 ```
 
