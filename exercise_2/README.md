@@ -10,7 +10,7 @@
 ## Main program
 The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will be (note that this is not a valid model for large $Z$). 
 
-_The program also prints out the integral of the Radial Probability Density, as to verify that it is approximately_ $1$. _The higher `rmax` and `prec` values, the closer you get to_ $1$.
+_The program also prints out the integral of the Radial Probability Density, as to verify that it is approximately_ $1$. _The higher `rmax` and `prec` values, the closer you get to_ $1$. _As well as the expectation value of_ $r$ _and the most probable value of_ $r$,
 
 Example of how to run the program with quantum numbers $n=2$ and $l=1$, and atomic number $Z=1$. We use `rmax=16` to specify the maximum distance away from the nucleus to calculate for, and `prec=100` amount of points between `0` and `rmax` for the plotting (higher `prec`, smoother plot)
 
@@ -21,7 +21,13 @@ python plot.py -n 2 -L 1 -Z 1 --rmax 16 --prec 100
 Output:
 
 ```
-Integral of Radial Probability Density fom 0 to 16.0 = 0.9995995003362249
+
+For r ∈ [0, 16.0] we have:
+
+        ∫P = 0.999599500336225
+       <r> = 4.993081081953550 [1/Z]
+MaxProb{r} = 4.040404040404041 [1/Z]
+
 ```
 
 ![](fig.png)

@@ -24,9 +24,14 @@ def plot(rmax: float, prec: int,
     u = r*R
     P = np.abs(u)**2
 
-    # Print integration of probability density. Should be very close to 1
-    print(f"Integral of Radial Probability Density fom 0 to {rmax} = "
-          f"{integ.simpson(P, r)}")
+    # Print integral of probability density, expect. value, and most prob value
+    print()
+    print(f"For r ∈ [0, {rmax}] we have:")
+    print()
+    print(f"        ∫P = {integ.simpson(P, r):.15f}")
+    print(f"       <r> = {integ.simpson(r*P, r):.15f} [1/Z]")
+    print(f"MaxProb{{r}} = {r[np.argmax(P)]:.15f} [1/Z]")
+    print()
 
     fig = plt.figure(layout="constrained")
     fig.suptitle(f"$n = {n}$ and $L = {L}$")
