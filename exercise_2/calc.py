@@ -1,13 +1,11 @@
 """Functions for calculating Radial Wave Function values
 
 """
-# Lots of room for improving these functions.
 
 # Third party
 import numpy as np
 import scipy.special as sp
 from numpy.typing import NDArray
-
 
 def _b0_value(n: int, L: int, Z: int) -> float:
     """Returns analytical b0 value
@@ -46,5 +44,5 @@ def R_values(r_max: float, prec: int,
     # Collapse r from column vector to vector so we get a vector for R values
     r = r[:,0]  
     
-    # Return R Values
+    # Return R Values and r values as two vectors (1D-arrays)
     return (Z/(n))*np.exp(-(Z*r)/(n))*R_sums, r
