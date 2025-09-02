@@ -1,5 +1,12 @@
 # **Exercise 2**: Plotting of Radial Wave Function
 
+- [Main program](#main-program)
+- [Mathematics behind code](#mathematics-behind-code)
+   * [Finding the constraints of $R$ (normalization integral)](#finding-the-constraints-of-r-normalization-integral)
+   * [Rewriting the sum in the integral](#rewriting-the-sum-in-the-integral)
+   * [Evaluating the integral](#evaluating-the-integral)
+   * [Solving for $b_0$](#solving-for-b_0)
+
 ## Main program
 The program `plot.py` uses numerical integration to determine the normalization of the Radial Wave Function, then plots it together with the Reduced Radial Wave Function and the Radial Probability Density.
 
