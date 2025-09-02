@@ -4,3 +4,5 @@ Collection of code snippets I've created during the course [PHYS261 Applied Quan
 **Exercise 1:** Approximation of Harmonic Oscillator eigenenergies via Infinite Square Well eigenfunctions.
 
 **Exercise 2:** Plotting of Radial Wave Function.
+
+**Exercise 3:** Numerical solution to the Radial Equation.
