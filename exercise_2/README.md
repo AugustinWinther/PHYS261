@@ -21,27 +21,27 @@ _NOTE: GitHub does not have the best renderer for LaTeX. I recommend viewing thi
 We have three functions (all in atomic units) which we want to plot for arbitrary $n$, $l$ and $Z$ values:
 
 The **Radial Probability Density**
-$$
+```math
     P_{n l}(r) = \left|u_{n l}(r)\right|^2
-$$
+```
 
 where $u_{n l}(r)$ is the **Reduced Radial Wave Function**
 
-$$
+```math
     u_{n l}(r) = r R_{n l}(r)
-$$
+```
 
 where $R_{n l}(r)$ is the **Radial Wave Function**
 
-$$
+```math
     R_{n l}(r) = \frac{Z}{n} e^{-Z r / n} \sum_{k=0} b_k \left(\frac{Z r}{n}\right)^{(k + l)}
-$$
+```
 
 where $b_k$ is given recursively as
 
-$$
+```math
     b_{k + 1} = \frac{2(k + l -n + 1)}{(k + 1)(k + 2l + 2)}b_k
-$$
+```
 
 where the first $b_k$ value, $b_0$ is found by the normalization condition.
 
@@ -51,44 +51,44 @@ The main part of this program focuses on finding $b_0$. To find it, we first nee
 
 The Radial Wave Function arises from the assumption that we can write certain wave functions $\psi$ as
 
-$$
+```math
     \psi_{n l m}(r, \theta, \phi) = R_{n l}(r) Y_l^m(\theta, \phi)
-$$
+```
 
 where $Y = Y_l^m(\theta, \phi)$ is the Angular Wave Function. We will not go too much into detail about this one, other than that the integral of $Y^*Y$ on its domain is equal to $1$.
 
 In quantum mechanics, we have the following constraint for "correct" wave functions
 
-$$
+```math
     1 = \int_{\mathbb{R}^3} \psi^*\psi \, d\vec{r}
-$$
+```
 
 In our case, $\psi$ is expressed in spherical coordinates, so writing this as an explicit triple-integral, we get
 
-$$
+```math
 \begin{align*}
 1 &= \int_0^\infty \int_0^\pi \int_0^{2\pi} \psi^*\psi \, r^2 \sin(\theta) d\phi d\theta dr \\
   &= \int_0^\infty \int_0^\pi \int_0^{2\pi} R^* Y^* R Y \, r^2 \sin(\theta) d\phi d\theta dr
 \end{align*}
-$$
+```
 
 Now, since $Y$ depends only on $\theta$ and $\phi$, while $R$ only depends on $r$, we can further write this as
 
-$$
+```math
 1 = \int_0^\infty R^* R \, r^2  dr  \int_0^\pi \int_0^{2\pi} Y^*Y  \sin(\theta) d\phi d\theta
-$$
+```
 
 and since we already know that he integral of $Y^*Y$ on its domain is equal to $1$, and that $R$ is a purely real function, we end up with
 
-$$
+```math
 \begin{align*}
 1 &= \int_0^\infty r^2 \left|R\right|^2 dr
 \end{align*}
-$$
+```
 
 Which when more fully expressed becomes
 
-$$
+```math
 \begin{align*}
 1 &= \int_0^\infty r^2 \left|R\right|^2 dr \\
   &= \int_0^\infty r^2 \left|\frac{Z}{n} e^{-Z r / n} \sum_{k=0} b_k \left(\frac{Z r}{n}\right)^{(k + l)}\right|^2 dr \\
@@ -99,7 +99,7 @@ $$
   &= \left(\frac{Z}{n}\right)^2 \left(\frac{Z}{n}\right)^{2l} \int_0^\infty r^2 e^{-2Z r / n} r^{2l}\left|\sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k\right|^2 dr \\
   &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|\sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k\right|^2 dr \\
 \end{align*}
-$$
+```
 
 We now have a better view of the constraint we are beholden to. Now, we need to find out what consequence this has for the value of $b_0$ 
 
@@ -109,28 +109,28 @@ _We could already stop here if all we wanted was to calculate $b_0$ numerically,
 
 Let us focus on the sum in the integral:
 
-$$
+```math
 \sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k
-$$
+```
 
 Since $b_k$ is given recursively as
 
-$$
+```math
     b_{k + 1} = \frac{2(k + l -n + 1)}{(k + 1)(k + 2l + 2)}b_k
-$$
+```
 
 or equivalently
 
-$$
+```math
 \begin{align*}
     b_{k} &= b_{k - 1}\frac{2[(k - 1) + l -n + 1]}{[(k - 1) + 1][(k - 1) + 2l + 2]} \\
           &= b_{k - 1}\frac{2(k  + l - n)}{k(k+ 2l + 1)}
 \end{align*}
-$$
+```
 
 we have that all $b_k$'s includes the value of $b_0$, so we can actually write the formula as non-recursive given $b_0$ is known:
 
-$$
+```math
 \begin{align*}
     b_1 &= b_0 \frac{2(1  + l - n)}{1(1+ 2l + 1)} \\
     b_2 &= b_0 \frac{2(1  + l - n)}{1(1+ 2l + 1)} \frac{2(2  + l - n)}{2(2+ 2l + 1)} \\
@@ -140,16 +140,16 @@ $$
     b_j &= b_0 \frac{\prod_{i=1}^{j} (i + l - n)}{\prod_{i=1}^{j} (i + 2l + 1)} \cdot \frac{2^j}{j!} \\
     b_j &= b_0 \frac{\prod_{i=1}^{j} [(l - n) + i]}{\prod_{i=1}^{j} [(2l + 1) + i]} \cdot \frac{2^j}{j!}
 \end{align*}
-$$
+```
 
 Before we continue so simplify $b_j$, we need to go over a quick definition of the [Pochhammer function / rising factorial](https://en.wikipedia.org/wiki/Falling_and_rising_factorials):
 
-$$
+```math
 \begin{align*}
     (x)_j&=x(x + 1)(x + 2)\cdots(x + j - 1) \\
            &=\prod_{i=1}^{j}(x + i - 1) \\
 \end{align*}
-$$
+```
 
 which has the following added definitions of $(x)_0=1$, $(0)_0=1$ and $(0)_j=0$.
 
@@ -157,22 +157,22 @@ _NOTE that one usually writes it as $x^{(j)}$, but this notation was chosen as i
 
 In our case, we can therefore write
 
-$$
+```math
 \begin{align*}
     \prod_{i=1}^{j} [(l - n) + i]  &= \prod_{i=1}^{j} [(l - n + 1) + i - 1]  = (l - n + 1)_j \\
     \prod_{i=1}^{j} [(2l + 1) + i] &= \prod_{i=1}^{j} [(2l + 1 + 1) + i - 1] = (2l + 2)_j
 \end{align*}
-$$
+```
 
 Which leads to a simpler expression for $b_j$
 
-$$
+```math
     b_j = b_0 \frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{2^j}{j!}
-$$
+```
 
 We can now rewrite our sum:
 
-$$
+```math
 \begin{align*}
     \sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k 
     &= b_0 + \sum_{j=1}b_j \left(\frac{Z r}{n}\right)^j \\
@@ -180,62 +180,62 @@ $$
     &= b_0 + b_0\sum_{j=1}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{2^j}{j!} \left(\frac{Z r}{n}\right)^j \\
     &= b_0 + b_0\sum_{j=1}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{(2 Z r / n)^j}{j!} \\
 \end{align*}
-$$
+```
 
 We have that 
 
-$$
+```math
 \frac{(l - n + 1)_0}{(2l + 2)_0} \cdot \frac{(2 Z r / n)^0}{0!} = \frac{1}{1}\cdot\frac{1}{1} = 1
-$$
+```
 
 thus we can rewrite new sum as
 
-$$
+```math
 \begin{align*}
     \sum_{j=1}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{(2 Z r / n)^j}{j!}
     &= \sum_{j=0}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{(2 Z r / n)^j}{j!} -1 \\
 \end{align*}
-$$
+```
 
 And our new expression for our sum becomes
 
-$$
+```math
 \begin{align*}
     \sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k 
     &= b_0 + b_0\left(\sum_{j=0}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{(2 Z r / n)^j}{j!} -1\right) \\
     &= b_0 + b_0\sum_{j=0}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{(2 Z r / n)^j}{j!} -b_0 \\
     &= b_0\sum_{j=0}\frac{(l - n + 1)_j}{(2l + 2)_j} \cdot \frac{(2 Z r / n)^j}{j!}
 \end{align*}
-$$
+```
 
 
 Now, here comes the cool part, the sum in the last line above is a [hypergeometric function](https://en.wikipedia.org/wiki/Generalized_hypergeometric_function) of the form
 
 
-$$
+```math
     {}_{1}F_{1}(a; b; z) = \sum_{j=0} \frac{(a)_j}{(b)_j}\cdot\frac{z^j}{j!}
-$$
+```
  
 which is also called [Kummer's function of the first kind](https://en.wikipedia.org/wiki/Confluent_hypergeometric_function). We can thus write
 
-$$
+```math
 \begin{align*}
     \sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k 
     &= b_0 \space {}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n) \\
 \end{align*}
-$$
+```
 
 
 We can replace our sum in the integral with out new expression:
 
-$$
+```math
 \begin{align*}
   1 &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|\sum_{k=0} b_k \left(\frac{Z r}{n}\right)^k\right|^2 dr \\
   &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|b_0{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
   &= \left(\frac{Z}{n}\right)^{2 + 2l} \int_0^\infty r^{2 + 2l} e^{-2Z r / n} b_0^2 \left|{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
   &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|{}_{1}F_{1}(l - n + 1; \space 2l + 2; \space 2 Z r / n)\right|^2 dr \\
 \end{align*}
-$$
+```
 
 Well, the integral still looks somewhat horrible, however, so we still have a ways to go.
 
@@ -246,76 +246,77 @@ Since $l \in [0, n-1]$, then we have that the value $l - n + 1$ is always non-po
 
 The Hypergeometric function we are working with (Krummer's function of first kind) has a nice relationship with (in fact, it's the actual definition of) [Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials#Properties), when the first parameter is non-positive:
 
-$$
+```math
     L_a^b(z) = {a + b \choose a}{}_{1}F_{1}(-a;\space b + 1;\space z)
-$$
+```
 
 where $a$ and $b$ are some non-negative integers. 
 
 In our case, we would have $-a = l - n + 1$ and $b + 1 = 2l + 2$, and of course $z = 2 Z r / n$
 
-$$
+```math
 \begin{align*}
     L_{n - l - 1}^{2l + 1}(2 Z r / n) &= {n - l - 1 + 2l + 1 \choose n - l - 1}{}_{1}F_{1}(l - n + 1;\space 2l + 2;\space 2 Z r / n) \\
     &= {n + l \choose n - l - 1}{}_{1}F_{1}(l - n + 1;\space 2l + 2;\space 2 Z r / n) \\
     &= \frac{(n + l)!}{(n - l - 1)!(n + l - (n - l - 1))!} {}_{1}F_{1}(l - n + 1;\space 2l + 2;\space 2 Z r / n) \\
     &= \frac{(n + l)!}{(n - l - 1)!(2l +1)!} {}_{1}F_{1}(l - n + 1;\space 2l + 2;\space 2 Z r / n)
 \end{align*}
-$$
+```
 
 Solving for our hypergeometric function, we get
 
-$$
+```math
     {}_{1}F_{1}(l - n + 1;\space 2l + 2;\space 2 Z r / n) = \frac{(n - l - 1)!(2l +1)!}{(n + l)!} L_{n - l - 1}^{2l + 1}(2 Z r / n)
-$$
+```
 
 Putting this into the integral, we get
 
-$$
+```math
 \begin{align*}
     1 &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|\frac{(n - l - 1)!(2l +1)!}{(n + l)!} L_{n - l - 1}^{2l + 1}(2 Z r / n)\right|^2 dr \\
     &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \left[\frac{(n - l - 1)!(2l +1)!}{(n + l)!} \right]^2 \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left|L_{n - l - 1}^{2l + 1}(2 Z r / n)\right|^2 dr
 \end{align*}
-$$
+```
 
 Our Laguerre polynomial is real valued, thus we can remove the absolute sign
 
-$$
+```math
 1 = \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \left[\frac{(n - l - 1)!(2l +1)!}{(n + l)!} \right]^2 \int_0^\infty r^{2 + 2l} e^{-2Z r / n} \left[L_{n - l - 1}^{2l + 1}(2 Z r / n)\right]^2 dr
-$$
+```
 
 Now, the [orthogonality of Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials#Orthogonality) over $[0, \infty)$ make them sometimes nice to integrate. Generally, we have
 
-$$
+```math
     \int_0^\infty z^b e^{-z} L_a^b(z)L_c^b(z)\,dz=\frac{\Gamma(a + b + 1)}{a!}\delta_{ac}
-$$
+```
 
 
 where $\Gamma$ is the [gamma function](https://en.wikipedia.org/wiki/Gamma_function), and $\delta$ is the [Kronecker-delta](https://no.wikipedia.org/wiki/Kronecker-delta). From this, one should be able to find (though, I was unable to) that:
 
 <!-- My attempt at finding the integral manually
 
-$$
+```math
     \int_0^\infty z^b e^{-z} L_a^b(z)L_a^b(z)\,dx = \int_0^\infty z^b e^{-z} [L_a^b(z)]^2\,dz =\frac{\Gamma(a + b + 1)}{a!}
-$$
+```
 
 In our case, we would have $a = n - l - 1$ and $b= 2l + 1$, and of course $z = 2 Z r / n$, thus
 
-$$
+```math
 \begin{align*}
     \int_0^\infty \left(2\frac{Zr}{n}\right)^{2l + 1} e^{-2 Z r / n} [L_{n - l - 1}^{2l + 1}(2 Z r / n)]^2\,\frac{2Z}{n}dr &= \frac{\Gamma([n - l - 1] + [2l + 1] + 1)}{(n - l - 1)!} \\
     \int_0^\infty \left(\frac{2Z}{n}\right)^{2 + 2l}r^{1 + 2l} e^{-2 Z r / n} [L_{n - l - 1}^{2l + 1}(2 Z r / n)]^2\,dr &= \frac{\Gamma(n +l + 1)}{(n - l - 1)!} \\
     \left(\frac{2Z}{n}\right)^{2 + 2l}\int_0^\infty r^{1 + 2l} e^{-2 Z r / n} [L_{n - l - 1}^{2l + 1}(2 Z r / n)]^2\,dr &= \frac{\Gamma(n +l + 1)}{(n - l - 1)!} \\
 \end{align*}
-$$ -->
+```
+-->
 
-$$
+```math
     \int_0^\infty z^{b+ 1} e^{-z} [L_a^b(z)]^2\,dz = \frac{(a + b)!}{a!}(2a + b + 1)
-$$
+```
 
 In our case, we would have $a = n - l - 1$ and $b= 2l + 1$, and of course $z = 2 Z r / n$, thus
 
-$$
+```math
 \begin{align*}
     \int_0^\infty \left(2\frac{Z r}{n}\right)^{2 + 2l} e^{-2 Z r / n} [L_{n - l - 1}^{2l + 1}(2 Z r / n)]^2\,\frac{2 Z}{n} dr &= \frac{(n - l - 1 + 2l + 1)!}{(n - l - 1)!}(2[n - l - 1] + 2l + 1 + 1) \\
 
@@ -325,26 +326,26 @@ $$
 
     \int_0^\infty  r^{2 + 2l} e^{-2 Z r / n} [L_{n - l - 1}^{2l + 1}(2 Z r / n)]^2\, dr &= \left(2\frac{Z}{n}\right)^{-3 - 2l}  \frac{(n + l)!}{(n - l - 1)!}2n \\
 \end{align*}
-$$
+```
 
 which is our integral! We thus end up with the equation
 
-$$
+```math
 \begin{align*}
 1 &= \left(\frac{Z}{n}\right)^{2 + 2l}b_0^2 \left[\frac{(n - l - 1)!(2l +1)!}{(n + l)!} \right]^2 \left(2\frac{Z}{n}\right)^{-3 - 2l}  \frac{(n + l)!}{(n - l - 1)!}2n \\
   &= 2^{-2-2l}\left(\frac{Z}{n}\right)^{-1}b_0^2 \frac{n(n - l - 1)![(2l +1)!]^2}{(n + l)!} 
 \end{align*}
-$$
+```
 
 
 ### Solving for $b_0$
 
 Now, finally, we solve for $b_0$
 
-$$
+```math
 \begin{align*}
     b_0^2 &= 2^{2+2l} \frac{Z}{n} \cdot \frac{(n + l)!}{n(n - l - 1)![(2l +1)!]^2} \\
     b_0^2 &= 2^{2+2l} \frac{1}{[(2l +1)!]^2n^2} \cdot \frac{Z(n + l)!}{(n - l - 1)!} \\
     b_0 &= 2^{1+l} \frac{1}{n(2l +1)!} \sqrt{\frac{Z(n + l)!}{(n - l - 1)!}} \\
 \end{align*}
-$$
+```
