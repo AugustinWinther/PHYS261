@@ -32,12 +32,9 @@ def R_values(r_max: float, prec: int,
     # Row vector containing all k-values
     k = (np.arange(0, k_max + 1, dtype=np.float64))[np.newaxis, :]
 
-    b0 = _b0_value(n, L, Z)
-
-
     # Recursively calculate bk values if it has more than 1 value (b0)
     bk = np.empty_like(k)
-    bk[0, 0] = b0
+    bk[0, 0] = _b0_value(n, L, Z)
 
     if k_max > 0:
         for j in range(k_max):  # Don't use k as iterator; ruins k vector
@@ -51,11 +48,3 @@ def R_values(r_max: float, prec: int,
     
     # Return R Values
     return (Z/(n))*np.exp(-(Z*r)/(n))*R_sums, r
-
-
-
-    
-
-
-
-
