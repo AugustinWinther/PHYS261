@@ -20,6 +20,10 @@ python plot.py -n 2 -L 1 -Z 1 --rmax 16 --prec 100
 
 Output:
 
+```
+Integral of Radial Probability Density fom 0 to 16.0 = 0.9995995003362249
+```
+
 ![](fig.png)
 
 
