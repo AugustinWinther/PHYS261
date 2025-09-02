@@ -2,15 +2,15 @@
 
 - [Main program](#main-program)
 - [Mathematics behind code](#mathematics-behind-code)
-   * [Finding the constraints of $R$ (normalization integral)](#finding-the-constraints-of-r-normalization-integral)
+   * [Finding the constraints of R (normalization integral)](#finding-the-constraints-of-r-normalization-integral)
    * [Rewriting the sum in the integral](#rewriting-the-sum-in-the-integral)
    * [Evaluating the integral](#evaluating-the-integral)
-   * [Solving for $b_0$](#solving-for-b_0)
+   * [Solving for b0](#solving-for-b_0)
 
 ## Main program
 The program `plot.py` calls `calc.py` which uses analytical solutions to determine the Radial Wave Function values for a given set of quantum numbers $n$ and $l$ and atomic number $Z$. The program `plot.py` then plots the Radial Wave Function together with the Reduced Radial Wave Function and the Radial Probability Density; thus visualizing how far away form the nucleus the lone electron most likely will be (note that this is not a valid model for large $Z$). 
 
-_The program also prints out the integral of the Radial Probability Density, as to verify that it is approximately $1$. The higher `rmax` and `prec` values, the closer you get to $1$._
+_The program also prints out the integral of the Radial Probability Density, as to verify that it is approximately_ $1$. _The higher `rmax` and `prec` values, the closer you get to_ $1$.
 
 Example of how to run the program with quantum numbers $n=2$ and $l=1$, and atomic number $Z=1$. We use `rmax=16` to specify the maximum distance away from the nucleus to calculate for, and `prec=100` amount of points between `0` and `rmax` for the plotting (higher `prec`, smoother plot)
 
@@ -170,7 +170,7 @@ Before we continue to simplify $b_j$, we need to go over a quick definition of t
 
 which has the following added definitions of $(x)_0=1$, $(0)_0=1$ and $(0)_j=0$.
 
-_NOTE that one usually writes it as $x^{(j)}$, but this notation was chosen as it is used in [hypergeometric series's](https://en.wikipedia.org/wiki/Hypergeometric_function), as well as it being more cleaner._
+_NOTE that one usually writes it as_ $x^{(j)}$, _but this notation was chosen as it is used in [hypergeometric series's](https://en.wikipedia.org/wiki/Hypergeometric_function), as well as it being more cleaner._
 
 In our case, we can therefore write
 
